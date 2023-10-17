@@ -7,7 +7,6 @@ pygame.init()
 print('\nRunning make_screen.py.')
 print('-------------------------------------------')
 
-
 # Screen dimensions
 scr_wid = 800  # (px)
 scr_hgt = 600  # (px)
@@ -17,7 +16,7 @@ blue = (0, 0, 255)
 brown = (139, 69, 19)
 
 # Rectangle 01 properties.
-rec_01_hgt = 50
+rec_01_hgt = 25
 rec_01_wid = scr_wid
 rec_01_pos_x = 0
 rec_01_pos_y = scr_hgt - rec_01_hgt
@@ -27,12 +26,12 @@ rec_01 = pygame.Rect(0, scr_hgt - rec_01_hgt, scr_wid, rec_01_hgt)
 scr = pygame.display.set_mode((scr_wid, scr_hgt))
 pygame.display.set_caption('Blue Background with Brown Rectangle')
 
-# Main loop
-
 # Create time epoch.
 t0 = time.time()
 t = 0
 
+# Main loop
+print('In game loop ... ', end='')
 running = True
 while running and (t < 2):
 
@@ -48,14 +47,16 @@ while running and (t < 2):
     scr.fill(blue)
 
     if t > 1:
-        rec_01.update(0, int(scr_hgt/2), rec_01_wid, rec_01_hgt)
-    print(rec_01)
+        rec_01.update(100, int(scr_hgt/2), rec_01_wid, rec_01_hgt)
 
     # Draw the brown rectangle at the bottom of the screen.
     pygame.draw.rect(scr, brown, rec_01)
 
     # Update the display
     pygame.display.flip()
+
+# End of game loop.
+print('done.')
 
 # Quit Pygame
 pygame.quit()
