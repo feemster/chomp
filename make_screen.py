@@ -46,7 +46,7 @@ while running and (t < 2):
     # Fill the screen with blue
     scr.fill(blue)
 
-    if t > 1:
+    if t > 2:
         rec_01.update(100, int(scr_hgt/2), rec_01_wid, rec_01_hgt)
 
     # Draw the brown rectangle at the bottom of the screen.
