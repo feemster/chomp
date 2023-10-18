@@ -4,8 +4,12 @@ import time
 # Initialize Pygame
 pygame.init()
 
+# Clear terminal output.
+for ii in range(0, 10):
+    print()
+
 print('\nRunning make_screen.py.')
-print('-------------------------------------------')
+print('-------------------------------------------\n')
 
 # Screen dimensions
 scr_wid = 800  # (px)
@@ -45,9 +49,6 @@ while running and (t < 2):
 
     # Fill the screen with blue
     scr.fill(blue)
-
-    if t > 2:
-        rec_01.update(100, int(scr_hgt/2), rec_01_wid, rec_01_hgt)
 
     # Draw the brown rectangle at the bottom of the screen.
     pygame.draw.rect(scr, brown, rec_01)
