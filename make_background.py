@@ -8,7 +8,7 @@ pygame.init()
 for ii in range(0, 10):
     print()
 
-print('\nRunning make_screen.py.')
+print('\nRunning make_background.py.')
 print('-------------------------------------------\n')
 
 # Screen dimensions
