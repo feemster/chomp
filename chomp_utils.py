@@ -1,27 +1,7 @@
 import pygame
-import sys
 import random
 
-# Initialize Pygame
-pygame.init()
 
-# Clear terminal output.
-for ii in range(0, 10):
-    print()
-
-print('\nRunning make_background.py.')
-print('-------------------------------------------\n')
-
-# Specify screen dimensions.
-scr_wid = 800  # (px)
-scr_hgt = 600  # (px)
-
-# Create the screen.
-scr = pygame.display.set_mode((scr_wid, scr_hgt))
-pygame.display.set_caption('Making a customized background')
-
-
-# ------------------------------------------------------------------------
 def make_background(surface):
     # Load the images.
     water = pygame.image.load("assets/sprites/water.png").convert()
@@ -51,30 +31,3 @@ def make_background(surface):
         x = random.randint(0, surface.get_width() - seagrass.get_width())
         surface.blit(seagrass, (x, surface.get_height() - sand.get_height() - sand_top.get_height()
                                 - seagrass.get_height() + 5))
-
-# ------------------------------------------------------------------------
-
-
-background = scr.copy()
-make_background(background)
-
-running = True
-while running:
-
-    # Get events happening in window.
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-    scr.blit(background, (0, 0))
-
-    # Update the display
-    pygame.display.flip()
-
-# End of game loop.
-print('\n-------------------------------------------')
-print('End of line.')
-
-# Quit Pygame
-pygame.quit()
-sys.exit()
