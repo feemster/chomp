@@ -14,7 +14,7 @@ class Fish:
 
         self.fish_x = random.randint(0, screen.get_width()-self.fish_img.get_width())
         self.fish_x_dir = 1
-        self.fish_x_spd = 0.1
+        self.fish_x_spd = screen.get_width()/(2*60)
 
         sand = pygame.image.load('assets/sprites/sand.png').convert()
         sand_top = pygame.image.load('assets/sprites/sand_top.png').convert()
@@ -23,7 +23,7 @@ class Fish:
         self.y_bnd = screen.get_height() - sand.get_height() - sand_top.get_height() - seagrass.get_height() - 5
         self.fish_y = random.randint(0, self.y_bnd)
         self.fish_y_dir = 1
-        self.fish_y_spd = 0.1
+        self.fish_y_spd = self.y_bnd/(5*60)
 
         # Random motion variables.
         # self.num_update_positions_run = 0
@@ -38,7 +38,6 @@ class Fish:
         #     self.fish_y_dir = -self.fish_y_dir
         #     self.num_pos_to_run_2_change = random.randint(500, 1000)
         #     self.num_update_positions_run = 0
-
 
         self.fish_x += self.fish_x_spd*self.fish_x_dir
         self.fish_y += self.fish_y_spd*self.fish_y_dir
@@ -57,6 +56,20 @@ class Fish:
 
         if self.fish_y < 0:
             self.fish_y_dir = 1
+
+        # Draw the self.fish.
+        screen.blit(self.fish_img, (self.fish_x, self.fish_y))
+
+
+class C_Fish(Fish):
+    def __init__(self, screen, color):
+
+        super().__init__(screen, color)
+
+    def update_position(self, screen):
+
+        # Update position based on keystrokes.
+
 
         # Draw the self.fish.
         screen.blit(self.fish_img, (self.fish_x, self.fish_y))
@@ -100,5 +113,5 @@ def make_splash_screen(background, scr):
     # Update the display (show to player).
     pygame.display.flip()
 
-    print('SPLASH SCREEN!!!!!!')
+    print('Chomp splash screen.')
     time.sleep(5)
