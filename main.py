@@ -1,43 +1,6 @@
 import pygame
 import sys
-import time
-from chomp_utils import make_background, make_splash_screen
-import random
-
-
-class Fish:
-    def __init__(self, screen, color):
-
-        # Fishy attributes.
-        fname = f'assets/sprites/{color}_fish.png'
-        self.fish_img = pygame.image.load(fname).convert()
-        self.fish_img.set_colorkey((0, 0, 0))
-
-        self.fish_x = random.randint(0, screen.get_width()-self.fish_img.get_width())
-        self.fish_x_dir = 1
-        self.fish_x_spd = 0.1
-
-        self.fish_y = random.randint(0, 4*self.fish_img.get_height())
-        self.fish_y_dir = 1
-        self.fish_y_spd = 0
-
-    def update_position(self, screen):
-
-        self.fish_x += self.fish_x_spd*self.fish_x_dir
-        self.fish_y += self.fish_y_spd*self.fish_y_dir
-
-        # Check the position of the self.fish.
-        if self.fish_x >= screen.get_width() - self.fish_img.get_width():
-            self.fish_x_dir = -1
-            self.fish_img = pygame.transform.flip(self.fish_img, True, False)
-
-        if self.fish_x < 0:
-            self.fish_x_dir = 1
-            self.fish_img = pygame.transform.flip(self.fish_img, True, False)
-
-        # Draw the self.fish.
-        screen.blit(self.fish_img, (self.fish_x, self.fish_y))
-
+from chomp_utils import make_background, make_splash_screen, Fish
 
 # Initialize Pygame
 pygame.init()
@@ -62,12 +25,12 @@ background = scr.copy()
 make_background(background)
 
 # Show splash screen.
-# make_splash_screen(background, scr)
+make_splash_screen(background, scr)
 
 # Create one fish.
 charles = Fish(scr, 'green')
 ted = Fish(scr, 'orange')
-ted.fish_x_spd = 0.5
+ted.fish_x_spd = 0.1
 
 print('RUNNING GAME ...')
 running = True

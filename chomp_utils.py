@@ -1,7 +1,65 @@
 import pygame
 import random
 import time
+import random
 
+
+class Fish:
+    def __init__(self, screen, color):
+
+        # Fishy attributes.
+        fname = f'assets/sprites/{color}_fish.png'
+        self.fish_img = pygame.image.load(fname).convert()
+        self.fish_img.set_colorkey((0, 0, 0))
+
+        self.fish_x = random.randint(0, screen.get_width()-self.fish_img.get_width())
+        self.fish_x_dir = 1
+        self.fish_x_spd = 0.1
+
+        sand = pygame.image.load('assets/sprites/sand.png').convert()
+        sand_top = pygame.image.load('assets/sprites/sand_top.png').convert()
+        seagrass = pygame.image.load('assets/sprites/seagrass.png').convert()
+
+        self.y_bnd = screen.get_height() - sand.get_height() - sand_top.get_height() - seagrass.get_height() - 5
+        self.fish_y = random.randint(0, self.y_bnd)
+        self.fish_y_dir = 1
+        self.fish_y_spd = 0.1
+
+        # Random motion variables.
+        # self.num_update_positions_run = 0
+        # self.num_pos_to_run_2_change = random.randint(500, 1000)
+
+    def update_position(self, screen):
+
+        # Increment counter.
+        # self.num_update_positions_run += 1
+        # if self.num_update_positions_run >= self.num_pos_to_run_2_change:
+        #     self.fish_x_dir = -self.fish_x_dir
+        #     self.fish_y_dir = -self.fish_y_dir
+        #     self.num_pos_to_run_2_change = random.randint(500, 1000)
+        #     self.num_update_positions_run = 0
+
+
+        self.fish_x += self.fish_x_spd*self.fish_x_dir
+        self.fish_y += self.fish_y_spd*self.fish_y_dir
+
+        # Check the position of the self.fish.
+        if self.fish_x >= screen.get_width() - self.fish_img.get_width():
+            self.fish_x_dir = -1
+            self.fish_img = pygame.transform.flip(self.fish_img, True, False)
+
+        if self.fish_x < 0:
+            self.fish_x_dir = 1
+            self.fish_img = pygame.transform.flip(self.fish_img, True, False)
+
+        if self.fish_y >= self.y_bnd:
+            self.fish_y_dir = -1
+
+        if self.fish_y < 0:
+            self.fish_y_dir = 1
+
+        # Draw the self.fish.
+        screen.blit(self.fish_img, (self.fish_x, self.fish_y))
 
 def make_background(surface):
     # Load the images.
