@@ -14,7 +14,7 @@ for ii in range(0, 10):
     print()
 
 print('\nRunning main.py.')
-print('-------------------------------------------\n')
+print('-------------------------------------------')
 
 # Specify screen dimensions.
 scr_wid = 800  # (px)
@@ -42,15 +42,11 @@ while running:
 
     t1 = time.time()
 
+    # Store pygame events in a variable.
+    events = pygame.event.get()
+
     # Get events happening in window.
-    for event in pygame.event.get():
-
-        # See if user presses a key.
-        if event.type == pygame.KEYDOWN:
-            print(f'User is presed {event.key}.')
-
-        if event.type == pygame.KEYUP:
-            print(f'User is released {event.key}.')
+    for event in events:
 
         # User presses X in window.
         if event.type == pygame.QUIT:
@@ -62,7 +58,10 @@ while running:
     # Update fish position.
     charles.update_position(scr)
     ted.update_position(scr)
-    mary.update_position(scr)
+    mary.update_position(scr, events)
+
+    # Check for collision.
+    charles.check_for_collisions([ted, mary])
 
     # Update the display
     pygame.display.flip()
@@ -70,11 +69,8 @@ while running:
     # Limit to 60 fps.
     clock.tick(60)
 
-    t2 = time.time()
-    print(f'loop rate = {1/(t2-t1):.1f} s. Expected loop rate = 60 hz.')
-
 # End of game loop.
-print('\n-------------------------------------------')
+print('-------------------------------------------')
 print('End of line.')
 
 # Quit Pygame

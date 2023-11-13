@@ -1,5 +1,4 @@
 import pygame
-import random
 import time
 import random
 
@@ -23,21 +22,9 @@ class Fish:
         self.y_bnd = screen.get_height() - sand.get_height() - sand_top.get_height() - seagrass.get_height() - 5
         self.fish_y = random.randint(0, self.y_bnd)
         self.fish_y_dir = 1
-        self.fish_y_spd = self.y_bnd/(5*60)
+        self.fish_y_spd = self.y_bnd/(2*60)
 
-        # Random motion variables.
-        # self.num_update_positions_run = 0
-        # self.num_pos_to_run_2_change = random.randint(500, 1000)
-
-    def update_position(self, screen):
-
-        # Increment counter.
-        # self.num_update_positions_run += 1
-        # if self.num_update_positions_run >= self.num_pos_to_run_2_change:
-        #     self.fish_x_dir = -self.fish_x_dir
-        #     self.fish_y_dir = -self.fish_y_dir
-        #     self.num_pos_to_run_2_change = random.randint(500, 1000)
-        #     self.num_update_positions_run = 0
+    def update_position(self, screen, events):
 
         self.fish_x += self.fish_x_spd*self.fish_x_dir
         self.fish_y += self.fish_y_spd*self.fish_y_dir
@@ -60,19 +47,96 @@ class Fish:
         # Draw the self.fish.
         screen.blit(self.fish_img, (self.fish_x, self.fish_y))
 
+    def check_for_collisions(self, other_fish_list):
+
+        # Check to see if I collide with any of the fish provided in the list.
+        other_fish_rect_list = []
+        for fish in other_fish_list:
+            other_fish_rect_list.append(pygame.Rect(fish.fish_x, fish.fish_y, int(fish.fish_img.get_width()/2),
+                                                    int(fish.fish_img.get_height()/2)))
+
+        my_rect = pygame.Rect(self.fish_x, self.fish_y, int(self.fish_img.get_width()/2),
+                              int(self.fish_img.get_height()/2))
+
+        # Check me against all the list of fish of rectangles.
+        indices_0 = my_rect.collidelistall(other_fish_rect_list)
+
+        if len(indices_0) > 0:
+            print('COLLISION!!!!')
+
 
 class C_Fish(Fish):
     def __init__(self, screen, color):
 
+        # Initalize parent class.
         super().__init__(screen, color)
 
-    def update_position(self, screen):
+        # Keys
+        self.key_up = 'not pressed'
+        self.key_down = 'not pressed'
+        self.key_left = 'not pressed'
+        self.key_right = 'not pressed'
+
+    def update_position(self, screen, events):
 
         # Update position based on keystrokes.
+        for event in events:
+            # See if user presses a key.
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    self.key_up = 'pressed'
 
+                if event.key == pygame.K_DOWN:
+                    self.key_down = 'pressed'
+
+                if event.key == pygame.K_LEFT:
+                    self.key_left = 'pressed'
+
+                if event.key == pygame.K_RIGHT:
+                    self.key_right = 'pressed'
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP:
+                    self.key_up = 'not pressed'
+
+                if event.key == pygame.K_DOWN:
+                    self.key_down = 'not pressed'
+
+                if event.key == pygame.K_LEFT:
+                    self.key_left = 'not pressed'
+
+                if event.key == pygame.K_RIGHT:
+                    self.key_right = 'not pressed'
+
+        # Update my fish based on status of my keys.
+        if self.key_up == 'pressed':
+            self.fish_y -= self.fish_y_spd
+
+        if self.key_down == 'pressed':
+            self.fish_y += self.fish_y_spd
+
+        if self.key_left == 'pressed':
+            self.fish_x -= self.fish_x_spd
+
+        if self.key_right == 'pressed':
+            self.fish_x += self.fish_x_spd
+
+        # Check the position of the self.fish.
+        if self.fish_x >= screen.get_width() - self.fish_img.get_width():
+            self.fish_x = screen.get_width() - self.fish_img.get_width()
+
+        if self.fish_x < 0:
+            self.fish_x = 0
+
+        if self.fish_y >= self.y_bnd:
+            self.fish_y = self.y_bnd
+
+        if self.fish_y < 0:
+            self.fish_y = 0
 
         # Draw the self.fish.
         screen.blit(self.fish_img, (self.fish_x, self.fish_y))
+
 
 def make_background(surface):
     # Load the images.
