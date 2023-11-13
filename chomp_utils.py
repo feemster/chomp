@@ -8,8 +8,13 @@ class Fish:
 
         # Fishy attributes.
         fname = f'assets/sprites/{color}_fish.png'
-        self.fish_img = pygame.image.load(fname).convert()
-        self.fish_img.set_colorkey((0, 0, 0))
+
+        self.fish_img_right = pygame.image.load(fname).convert()
+        self.fish_img_right.set_colorkey((0, 0, 0))
+        self.fish_img_left = pygame.transform.flip(self.fish_img_right, True, False)
+
+        self.fish_img = self.fish_img_right
+        # self.fish_img.set_colorkey((0, 0, 0))
 
         self.fish_x = random.randint(0, screen.get_width()-self.fish_img.get_width())
         self.fish_x_dir = 1
@@ -24,6 +29,9 @@ class Fish:
         self.fish_y_dir = 1
         self.fish_y_spd = self.y_bnd/(2*60)
 
+        # Sounds.
+        self.chomp = pygame.mixer.Sound('assets/sounds/chomp.wav')
+
     def update_position(self, screen, events):
 
         self.fish_x += self.fish_x_spd*self.fish_x_dir
@@ -32,11 +40,13 @@ class Fish:
         # Check the position of the self.fish.
         if self.fish_x >= screen.get_width() - self.fish_img.get_width():
             self.fish_x_dir = -1
-            self.fish_img = pygame.transform.flip(self.fish_img, True, False)
+            # self.fish_img = pygame.transform.flip(self.fish_img, True, False)
+            self.fish_img = self.fish_img_left
 
         if self.fish_x < 0:
             self.fish_x_dir = 1
-            self.fish_img = pygame.transform.flip(self.fish_img, True, False)
+            # self.fish_img = pygame.transform.flip(self.fish_img, True, False)
+            self.fish_img = self.fish_img_right
 
         if self.fish_y >= self.y_bnd:
             self.fish_y_dir = -1
@@ -52,17 +62,18 @@ class Fish:
         # Check to see if I collide with any of the fish provided in the list.
         other_fish_rect_list = []
         for fish in other_fish_list:
-            other_fish_rect_list.append(pygame.Rect(fish.fish_x, fish.fish_y, int(fish.fish_img.get_width()/2),
-                                                    int(fish.fish_img.get_height()/2)))
+            other_fish_rect_list.append(pygame.Rect(fish.fish_x, fish.fish_y, int(fish.fish_img.get_width()),
+                                                    int(fish.fish_img.get_height())))
 
-        my_rect = pygame.Rect(self.fish_x, self.fish_y, int(self.fish_img.get_width()/2),
-                              int(self.fish_img.get_height()/2))
+        my_rect = pygame.Rect(self.fish_x, self.fish_y, int(self.fish_img.get_width()),
+                              int(self.fish_img.get_height()))
 
         # Check me against all the list of fish of rectangles.
         indices_0 = my_rect.collidelistall(other_fish_rect_list)
 
         if len(indices_0) > 0:
             print('COLLISION!!!!')
+            pygame.mixer.Sound.play(self.chomp)
 
 
 class C_Fish(Fish):
@@ -115,10 +126,14 @@ class C_Fish(Fish):
         if self.key_down == 'pressed':
             self.fish_y += self.fish_y_spd
 
+        # Make right facing fish.
         if self.key_left == 'pressed':
             self.fish_x -= self.fish_x_spd
+            self.fish_img = self.fish_img_left
 
+        # Make left facing fish.
         if self.key_right == 'pressed':
+            self.fish_img = self.fish_img_right
             self.fish_x += self.fish_x_spd
 
         # Check the position of the self.fish.
@@ -136,7 +151,6 @@ class C_Fish(Fish):
 
         # Draw the self.fish.
         screen.blit(self.fish_img, (self.fish_x, self.fish_y))
-
 
 def make_background(surface):
     # Load the images.
