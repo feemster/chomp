@@ -34,7 +34,7 @@ make_background(background)
 # Create one fish.
 # charles = Fish(scr, 'green')
 # ted = Fish(scr, 'orange')
-num_fish = 3
+num_fish = 10
 fish_list = []
 for ii in range(0, int(num_fish/2)):
     fish_list.append(Fish(scr, 'green'))

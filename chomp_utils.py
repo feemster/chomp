@@ -69,10 +69,14 @@ class Fish:
                               int(self.fish_img.get_height()))
 
         # Check me against all the list of fish of rectangles.
-        indices_0 = my_rect.collidelistall(other_fish_rect_list)
+        indices = my_rect.collidelistall(other_fish_rect_list)
 
-        if len(indices_0) > 0:
-            print('COLLISION!!!!')
+        # Order the result from biggest index to smallest index.
+        indices.sort(reverse=True)
+
+        # Remove collided fish.
+        for idx in indices:
+            other_fish_list.pop(idx)
             pygame.mixer.Sound.play(self.chomp)
 
 
@@ -151,6 +155,7 @@ class C_Fish(Fish):
 
         # Draw the self.fish.
         screen.blit(self.fish_img, (self.fish_x, self.fish_y))
+
 
 def make_background(surface):
     # Load the images.
