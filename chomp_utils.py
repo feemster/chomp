@@ -12,9 +12,11 @@ class Fish:
         self.fish_img_right = pygame.image.load(fname).convert()
         self.fish_img_right.set_colorkey((0, 0, 0))
         self.fish_img_left = pygame.transform.flip(self.fish_img_right, True, False)
+        self.fish_img_up = pygame.transform.rotate(self.fish_img_right, 90)
+        self.fish_img_down = pygame.transform.rotate(self.fish_img_right, -90)
 
         self.fish_img = self.fish_img_right
-        # self.fish_img.set_colorkey((0, 0, 0))
+        self.fish_img.set_colorkey((0, 0, 0))
 
         self.fish_x = random.randint(0, screen.get_width()-self.fish_img.get_width())
         self.fish_x_dir = 1
@@ -125,9 +127,11 @@ class C_Fish(Fish):
 
         # Update my fish based on status of my keys.
         if self.key_up == 'pressed':
+            self.fish_img = self.fish_img_up
             self.fish_y -= self.fish_y_spd
 
         if self.key_down == 'pressed':
+            self.fish_img = self.fish_img_down
             self.fish_y += self.fish_y_spd
 
         # Make right facing fish.
